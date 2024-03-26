@@ -1,0 +1,65 @@
+@import '../../styles/variables';
+
+.items {
+  display: grid;
+  grid-column: 3 / span 8;
+  grid-template-columns: repeat(12, 1fr);
+
+  .breadcrumb {
+    font-size: 14px;
+    padding: 16px 0 16px 0;
+    grid-column: span 12;
+    color: $dark-grey;
+  }
+
+  .list {
+    grid-column: span 12;
+    background: white;
+
+    .item {
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      border-bottom: 1px solid $light-grey;
+      padding: 16px;
+
+      .photo {
+        border-radius: 4px;
+        width: 180px;
+        height: 180px;
+        background: green;
+
+        img {
+          width: inherit;
+          height: inherit;
+          object-fit: cover;
+        }
+      }
+
+      .detail {
+        // flex: content;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 60%;
+        color: $black;
+
+        .price {
+          font-size: 24px;
+          margin-bottom: 32px;
+        }
+
+        .title {
+          font-size: 18px;
+          max-width: 500px;
+        }
+      }
+
+      .location {
+        color: $dark-grey;
+        font-size: 12px;
+        margin-top: 40px;
+      }
+    }
+  }
+}

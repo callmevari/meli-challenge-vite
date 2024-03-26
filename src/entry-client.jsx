@@ -1,4 +1,5 @@
 import { hydrateRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
  
 import App from './app';
 
@@ -8,4 +9,8 @@ if (typeof window !== 'undefined') {
   data = window.__data__;
 }
  
-hydrateRoot(document.getElementById('app'), <App data={data} />);
+hydrateRoot(document.getElementById('app'), 
+  <BrowserRouter>
+    <App data={data} />
+  </BrowserRouter>
+);
