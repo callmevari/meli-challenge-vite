@@ -17,6 +17,7 @@
     background: white;
 
     .item {
+      cursor: pointer;
       overflow: hidden;
       position: relative;
       display: flex;
@@ -28,6 +29,7 @@
         width: 180px;
         height: 180px;
         background: green;
+        margin-right: 16px;
 
         img {
           width: inherit;
@@ -59,6 +61,30 @@
         color: $dark-grey;
         font-size: 12px;
         margin-top: 40px;
+      }
+    }
+  }
+}
+
+
+@media only screen and (max-width: 1024px) {
+  .items {
+    display: grid;
+    grid-column: 2 / span 10;
+
+    .list {
+      .item {
+        align-items: center;
+        flex-direction: column;
+        padding: 16px;
+
+        .photo {
+          margin-right: 0;
+        }
+
+        .detail {
+          width: 80%;
+        }
       }
     }
   }

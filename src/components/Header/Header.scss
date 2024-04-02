@@ -7,6 +7,7 @@ header {
   align-items: center;
   background-color: $primary-color;
   padding: 8px 0 8px 0;
+  width: 100%;
 
   .logo {
     grid-column: 3;
@@ -47,6 +48,20 @@ header {
     }
     .search-icon:hover {
       background: #dddddd;
+    }
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  header {
+    .logo {
+      grid-column: 2;
+    }
+    .search-input {
+      grid-column: 4 / span 8;
+      display: flex;
+      align-items: center;
+      width: auto;
     }
   }
 }

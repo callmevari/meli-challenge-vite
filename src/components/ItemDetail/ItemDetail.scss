@@ -23,9 +23,10 @@
       display: flex;
 
       .photo {
-        min-width: 50%;
+        // min-width: 50%;
       }
       .info {
+        margin-left: 20px;
         color: $black;
         .legend {
           font-size: 14px;
@@ -71,6 +72,39 @@
         margin: 0;
         max-width: 60%;
         color: $dark-grey;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .item-detail {
+    grid-column: 2 / span 10;
+    .item {
+      .detail {
+        text-align: center;
+        flex-direction: column;
+        .photo img {
+          width: 100%;
+        }
+        .info {
+          margin-left: 0px;
+
+          .legend {
+            margin-top: 16px;
+          }
+        }
+        .info button {
+          width: 100%;
+        }
+      }
+      .description {
+        .title {
+          text-align: center;
+        }
+        p {
+          max-width: 100%;
+        }
       }
     }
   }

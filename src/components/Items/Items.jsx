@@ -1,22 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { formatPrice } from '../../utils/formatPrice';
+import { Breadcrumb } from '../Breadcrumb/Breadcrumb';
 import './Items.scss';
 
-const Items = ({ list }) => {
-  console.log(list);
+const Items = () => {
+  const navigate = useNavigate();
+  const [results, setResults] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get('search');
+
+  const fetchData = async () => {
+    const { data } = await axios.get('/api/items?q=' + search);
+    setCategories(data.categories);
+    setResults(data.results);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [searchParams]);
+
+  const itemHandler = (item) => {
+    navigate(`${item.id}`, { state: { categories }});
+  }
+
   return (
-    <section className="items">
+    <div className="items">
       <div className="breadcrumb">
-        Electrónica, Audio y Video - iPod - Reproductores - iPod Touch - <b>32 GB</b>
+        {categories && Breadcrumb(categories)}
       </div>
       <div className="list">
-        {list.map(e => (
-          <div className="item" key={e.title}>
+        {results.map((e, i) => (
+          <div className="item" key={`${e.title}-${i}`} onClick={() => itemHandler(e)}>
             <div className="photo">
               <img src={e.thumbnail} alt="product img" />
             </div>
             <div className="detail">
               <div className="price">
-                ${e.price.toString()}
+                ${formatPrice(e.price)}
               </div>
               <div className="title">
                 {e.title}
@@ -25,11 +48,11 @@ const Items = ({ list }) => {
             <div className="location">
               {e.seller.nickname}
             </div>
-          </div>
-        )
-      )}
+          </div>))
+        }
+        {!results.length && <div>Cargando...</div>}
       </div>
-    </section>
+    </div>
   );
 };
 

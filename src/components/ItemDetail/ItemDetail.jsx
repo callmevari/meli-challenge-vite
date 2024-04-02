@@ -1,41 +1,70 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
+import { formatPrice } from '../../utils/formatPrice';
+import { Breadcrumb } from '../Breadcrumb/Breadcrumb';
 import './ItemDetail.scss';
 
-const ItemDetail = () => {
+const ItemDetail = ({ current }) => {
+  const [currentItem, setCurrentItem] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const location = useLocation();
+  const params = useParams();
+
+  const fetchData = async () => {
+    const { data } = await axios.get('/api/items/' + params.id);
+    setCurrentItem({ ...data });
+  }
+
+  useEffect(() => {
+    const productId = location.pathname.split('/')[2];
+    const { categories = [] } = location.state || {};
+    setCategories(categories);
+    if (current && current.id === productId) {
+      setCurrentItem(current)
+    } else {
+      fetchData();
+    }
+  }, []);
+
   return (
-    <section className="item-detail">
+    <div className="item-detail">
       <div className="breadcrumb">
-        Electrónica, Audio y Video - iPod - Reproductores - iPod Touch - <b>32 GB</b>
+        {categories && Breadcrumb(categories)}
       </div>
-      <div className="item">
-        <div className="detail">
-          <div className="photo">
-            <img src="https://http2.mlstatic.com/D_842272-MLA52993977355_122022-O.jpg" />
-          </div>
-          <div className="info">
-            <div className="legend">
-              Nuevo - 234 vendidos
+      {!currentItem && (<div>Cargando producto...</div>)}
+      {currentItem && (
+        <div className="item">
+          <div className="detail">
+            <div className="photo">
+              <img src={currentItem.pictures[0].secure_url} />
             </div>
+            <div className="info">
+              <div className="legend">
+                {currentItem.warranty || 'Nuevo - 274 vendidos'}
+              </div>
+              <div className="title">
+                {currentItem.title}
+              </div>
+              <div className="price">
+                ${formatPrice(currentItem.base_price)}
+              </div>
+              <button>
+                Comprar
+              </button>
+            </div>
+          </div>
+          <div className="description">
             <div className="title">
-              Deco Reverse Sombrero Oxford
+              Descripción del producto
             </div>
-            <div className="price">
-              $1.980
-            </div>
-            <button>
-              Comprar
-            </button>
+            <p>
+              {currentItem.plain_text}
+            </p>
           </div>
         </div>
-        <div className="description">
-          <div className="title">
-            Descripción del producto
-          </div>
-          <p>
-            Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos.
-          </p>
-        </div>
-      </div>
-    </section>
+      )}
+    </div>
   );
 };
 
